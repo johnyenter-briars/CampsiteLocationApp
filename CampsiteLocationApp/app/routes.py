@@ -7,8 +7,10 @@ from werkzeug.urls import url_parse
 from xmljson import BadgerFish
 from json import dumps
 from collections import OrderedDict
-from xml.etree.ElementTree import fromstring
+import xml.etree.ElementTree as ET
 import sys
+from math import sin, cos, sqrt, atan2, radians
+
 
 @app.route('/')
 @app.route('/index')
@@ -72,15 +74,65 @@ def getJSON():
 
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():
-    jsdata = request.form['javascript_data']
 
-    return jsdata
+    returndata = request.form['XMLCampsiteData']
+    returnLocation = request.form['location']
+    radius = request.form['radius']
 
-@app.route('/XMLtoJSON/')
-def XMLtoJSON(xmldata):
+    parsedData = XMLParse(returndata)
 
-    bf = BadgerFish(dict_type=OrderedDict)
+    CalculateNearbyCampsites(parsedData, returnLocation, radius)
 
-    data = dumps(bf.data(fromstring(xmldata)))
+    return "ok"
 
-    return data
+@app.route('/XMLParse/')
+def XMLParse(xmldata):
+    xmldata = xmldata.replace("\n", "")
+
+    root = ET.fromstring(xmldata)
+    if root is not None:
+        return root;
+
+    return "Error in parsing XML data"
+
+@app.route('/CalculateNearbyCampsites/')
+def CalculateNearbyCampsites(data, location, radius):
+    temp = location.split(",")
+    latitude = round(float(temp[0]))
+    longitude = round(float(temp[1]))
+
+    print("STARTING", latitude, longitude)
+
+    print("starting count", len(data))
+
+    count = 0
+
+    for ele in data:
+        if ele.attrib["latitude"] == "" or ele.attrib["longitude"] == "":
+            continue
+        targetlatitude = round(float(ele.attrib["latitude"]))
+        targetlongitude = round(float(ele.attrib["longitude"]))
+        print(ele.attrib["facilityName"], ele.attrib["latitude"], ele.attrib["longitude"])
+
+        # approximate radius of earth in km
+        R = 6373.0
+
+        lati = radians(latitude)
+        loni = radians(longitude)
+        latf = radians(targetlatitude)
+        lonf = radians(targetlongitude)
+
+        dlon = lonf - loni
+        dlat = latf - lati
+
+        a = sin(dlat / 2) ** 2 + cos(lati) * cos(latf) * sin(dlon / 2) ** 2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        #times conversion factor to transfer to miles
+        distance = R * c * 0.621371
+
+        if distance <= float(radius):
+            print(ele.attrib["facilityName"], "is within the radius")
+            count += 1
+
+    print("finishing count: ", count)

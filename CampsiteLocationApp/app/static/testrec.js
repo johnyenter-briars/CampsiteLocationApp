@@ -11,7 +11,11 @@ request.onload = function () {
 
   console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
-  console.log(JSON.stringify(this.response))
+  console.log(JSON.parse(this.response))
+
+  $.post( "/postmethod", {
+            javascript_data: JSON.parse(this.response)
+    });
 
 }
 
