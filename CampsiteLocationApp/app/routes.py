@@ -60,7 +60,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/campsites', methods = ['POST'])
+@app.route('/campsites', methods=['POST'])
 def get_post_javascript_data():
 
     returndata = request.form.get('XMLCampsiteData')
