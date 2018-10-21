@@ -52,6 +52,10 @@
           <h3 class="reviewer_name">{{ review.author.username }}</h3>
             <p class="reviewer_comment">{{ review.body }}
           {% endfor %}
+
+          {% else %}
+              <h2 class="review_header">No Reviews for this campground</h2>
+          <a href="{{ url_for('new_review', cid=cid, pid=pid) }}">Care to write the first?!</a>
           {% endif %}
 
         </p>
