@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, session
+from flask import render_template, flash, redirect, url_for, request, session, jsonify
 from app import app, db
 from app.forms import LoginForm, SignupForm, EditProfileForm, WriteReviewForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -18,7 +18,6 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = dt.utcnow()
         db.session.commit()
-
 
 @app.route('/')
 @app.route('/index')
@@ -70,9 +69,7 @@ def get_post_javascript_data():
 
     parsedData = XMLParse(returndata)
 
-    CalculateNearbyCampsites(parsedData, returnLocation, radius)
-
-    return "ok"
+    return CalculateNearbyCampsites(parsedData, returnLocation, radius)
 
 def XMLParse(xmldata):
     xmldata = xmldata.replace("\n", "")
@@ -100,9 +97,9 @@ def CalculateNearbyCampsites(data, location, radius):
     for ele in data:
         if ele.attrib["latitude"] == "" or ele.attrib["longitude"] == "":
             continue
-        targetlatitude = round(float(ele.attrib["latitude"]))
-        targetlongitude = round(float(ele.attrib["longitude"]))
-        print(ele.attrib["facilityName"], ele.attrib["latitude"], ele.attrib["longitude"])
+        targetlatitude = round(float(ele.attrib.get("latitude")))
+        targetlongitude = round(float(ele.attrib.get("longitude")))
+        #print(ele.attrib["facilityName"], ele.attrib["latitude"], ele.attrib["longitude"])
 
         # approximate radius of earth in km
         R = 6373.0
@@ -122,11 +119,12 @@ def CalculateNearbyCampsites(data, location, radius):
         distance = R * c * 0.621371
         
         if distance <= float(radius):
-            print(ele.attrib["facilityName"], "is within the radius")
             count += 1
-            returnlyst.append({'latitude': latitude, 'longitude': longitude})
+            returnlyst.append({'facilityName': ele.attrib.get('facilityName'), 'latitude':
+                latitude, 'longitude': longitude, 'contractID': ele.attrib.get('contractID'), 'facilityID': ele.attrib.get('facilityID')})
 
-    
+    return jsonify(returnlyst)
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
