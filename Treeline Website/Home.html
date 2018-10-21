@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Treeline Home</title>
+<link rel="stylesheet" type="text/css" href="globalStyles.css">
+<link rel="stylesheet" type="text/css" href="home.css">
+</head>
+
+<body>
+
+<!-- Top navigation -->
+<div class="topnav"> 
+  
+  <!-- Centered link -->
+  <div class="topnav-centered"> <a href="#home"><img src="Pics/logo-02.jpg" width="211" height="68" alt=""/></a> </div>
+  
+  <!-- Left-aligned links (default) -->
+  <div class="topnav-left"> <a href="#news">My Campsites</a> <a href="#contact">Account</a> </div>
+  <!-- Right-aligned links -->
+  <div class="topnav-right"> <a href="#search">Contact</a> <a href="#about">About</a> </div>
+</div>
+
+<!--Hero Image-->
+<div class="main"> <img class="hero_image" src="Pics/home.jpg" width="1440" height="880" alt="Hero"/>
+  <h1>Discover your <br>
+    perfect campsite</h1>
+  <!--Search bar-->
+  
+  <div class="search_bar"> <img class="search_icon" src="Pics/search.png" width="40px" height="40px" alt="search icon"/>
+    <form action="/search" method="POST">
+      <input type="text" id="searchTxt" name="location" placeholder="Denver">
+    </form>
+  </div>
+</div>
+
+<!--Features--> 
+
+<!--Features 01-->
+
+<div class="flex-grid-seconds">
+  <div class="col"> <img src="Pics/Feature_01.jpg" width="530" height="430" alt=""/>
+    <h3 class="featured_campgrounds">Rocky Mountains Campground</h3>
+    <h4 class="featured_campgrounds_subtitle">Rocky Mts., CO</h4>
+    <h5 class="featured_campgrounds_body">The Rocky Mountains stretch some 3,000 miles from British Columbia and Alberta in Canada through Idaho, Montana, Wyoming, Colorado</h5>
+  </div>
+  <!--Features 02-->
+  
+  <div class="col"><img src="Pics/feature_02.jpg" width="530" height="430" alt=""/>
+    <h3 class="featured_campgrounds">Rocky Mountains Campground</h3>
+    <h4 class="featured_campgrounds_subtitle">Rocky Mts., CO</h4>
+    <h5 class="featured_campgrounds_body">The Rocky Mountains stretch some 3,000 miles from British Columbia and Alberta in Canada through Idaho, Montana, Wyoming, Colorado</h5>
+  </div>
+</div>
+
+
+<!--Footer-->
+
+<div class="footer"> 
+	<ul class="footer_filter">
+		<li style="font-weight: bold">Browse by filter</li>
+		<li>Activities</li>
+		<li>Cost</li>
+		<li>Size</li>
+		<li>Ammenities</li>
+		<li>Popularity</li>
+		<li>Availability</li>
+	</ul>
+	
+	
+	<div class="row">
+  <div class="column"><li style="font-weight: bold">Browse by filter</li>
+		<li>Activities</li>
+		<li>Cost</li>
+		<li>Size</li>
+  <div class="column">	<li>Ammenities</li>
+		<li>Popularity</li>
+		<li>Availability</li></div>
+</div>
+	
+	
+	
+</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+@charset "UTF-8";
+/* CSS Document */
+* {
+  box-sizing: border-box;
+}
+/* Add a black background color to the top navigation */
+.topnav {
+	position: relative;
+	background-color: white;
+	overflow: hidden;
+	width: 80%;
+	margin-left: 10%;
+}
+/* Style the links inside the navigation bar */
+.topnav a {
+	float: left;
+	color: #45BF55;
+	text-align: center;
+	padding: 14px 16px;
+	padding-bottom: 50px;
+	text-decoration: none;
+	font-size: 20px;
+	font-family: avenir;
+	font-weight: bold;
+	margin-top: 10px;
+}
+/* Change the color of links on hover */
+.topnav a:hover {
+	color: black;
+}
+/* Centered section inside the top navigation */
+.topnav-centered a {
+	float: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+	float: right;
+	margin-top: 10px;
+}
+.topnav-left {
+	float: left;
+	margin-top: 10px;
+}
+
+.footer{
+	height: 250px;
+	width: 1440px;
+	background-color: #45BF55;
+	margin-top: 100px;
+}
+.footer_filter{
+	color: white;
+	margin-top: 30px;
+	position: absolute;
+}
+ul{
+	list-style: none;
+	font-family: avenir;
+	font-size: 20px;
+}
+
+
+
+
+
+
+/* Responsive navigation menu - display links on top of each other instead of next to each other (for mobile devices) */
+@media screen and (max-width: 600px) {
+.topnav a, .topnav-right {
+	float: none;
+	display: block;
+}
+.topnav-centered a {
+	position: relative;
+	top: 0;
+	left: 0;
+	transform: none;
+}
+}
