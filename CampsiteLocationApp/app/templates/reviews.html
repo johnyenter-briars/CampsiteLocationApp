@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Reviews</h1>
+<hr>
+<h2>Have you stayed here?</h2>
+<a href="{{ url_for('new_review', cid=cid, pid=pid) }}">Write a review</a>
+<hr>
+{% for review in reviews %}
+{% include '_review.html' %}
+{% endfor %}
+{% endblock %}

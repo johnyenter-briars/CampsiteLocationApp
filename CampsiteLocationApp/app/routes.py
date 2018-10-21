@@ -94,16 +94,22 @@ def edit_profile():
 @login_required
 def campsites():
     campsites = [
-        {'name': 'CampName1', 'description': 'Test description #1'},
-        {'name': 'CampName2', 'description': 'Test description #2'}
+        {'contract_id': 'IL', 'park_id': '47083'},
+        {'contract_id': 'IL', 'park_id': '47083'}
     ]
     return render_template('campsites.html', title='Campsites', campsites=campsites)
 
 
-@app.route('/review/<cid>/<pid>', methods=['GET', 'POST'])
+@app.route('/reviews/<cid>/<pid>')
+def reviews(cid, pid):
+    reviews = Review.query.filter_by(contract_id=cid, park_id=pid).all()
+    return render_template('reviews.html', cid=cid, pid=pid, reviews=reviews)
+
+
+
+@app.route('/reviews/new/<cid>/<pid>', methods=['GET', 'POST'])
 @login_required
-def review(cid, pid):
-    print('REVIEWING')
+def new_review(cid, pid):
     form = WriteReviewForm()
     if form.validate_on_submit():
         review_body = form.review.data
@@ -112,8 +118,7 @@ def review(cid, pid):
                         contract_id=cid,
                         park_id=pid)
         db.session.add(review)
-        print('SAVINGREVIEW')
         db.session.commit()
         flash(f'Review saved for campsite at {cid}: {pid}')
         return redirect(url_for('profile'))
-    return render_template('review.html', cid=cid, pid=pid, form=form)
+    return render_template('new_review.html', cid=cid, pid=pid, form=form)
