@@ -60,7 +60,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/api/search', methods = ['POST'])
+@app.route('/campsites', methods = ['POST'])
 def get_post_javascript_data():
 
     returndata = request.form.get('XMLCampsiteData')
@@ -237,68 +237,3 @@ def add_favorite(cid, pid):
     current_user.favorites.append(campsite)
     # db.session.add(current_user)
     db.session.commit()
-
-
-@app.route('/api/search', methods = ['POST'])
-def get_post_javascript_data():
-
-    returndata = request.form.get('XMLCampsiteData')
-    returnLocation = request.form.get('location')
-    radius = request.form.get('radius')
-
-    parsedData = XMLParse(returndata)
-
-    CalculateNearbyCampsites(parsedData, returnLocation, radius)
-
-    return "ok"
-
-def XMLParse(xmldata):
-    xmldata = xmldata.replace("\n", "")
-
-    root = ET.fromstring(xmldata)
-
-    if not root:
-      return "Error in parsing XML data"
-
-    return root
-
-def CalculateNearbyCampsites(data, location, radius):
-    temp = location.split(",")
-    latitude = round(float(temp[0]))
-    longitude = round(float(temp[1]))
-
-    print("STARTING", latitude, longitude)
-
-    print("starting count", len(data))
-
-    count = 0
-
-    for ele in data:
-        if ele.attrib["latitude"] == "" or ele.attrib["longitude"] == "":
-            continue
-        targetlatitude = round(float(ele.attrib["latitude"]))
-        targetlongitude = round(float(ele.attrib["longitude"]))
-        print(ele.attrib["facilityName"], ele.attrib["latitude"], ele.attrib["longitude"])
-
-        # approximate radius of earth in km
-        R = 6373.0
-
-        lati = radians(latitude)
-        loni = radians(longitude)
-        latf = radians(targetlatitude)
-        lonf = radians(targetlongitude)
-
-        dlon = lonf - loni
-        dlat = latf - lati
-
-        a = sin(dlat / 2) ** 2 + cos(lati) * cos(latf) * sin(dlon / 2) ** 2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        #times conversion factor to transfer to miles
-        distance = R * c * 0.621371
-
-        if distance <= float(radius):
-            print(ele.attrib["facilityName"], "is within the radius")
-            count += 1
-
-    print("finishing count: ", count)
