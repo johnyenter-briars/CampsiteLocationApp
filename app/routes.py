@@ -203,7 +203,7 @@ def search():
         {'name': 'Castle Rock State Park', 'cid': 'IL', 'pid': '451621'},
         {'name': 'Argyle Lake State Park', 'cid': 'IL', 'pid': '451341'}
     ]
-    return render_template('campsites.html', campsites=campsites)
+    return render_template('campsites.html', campsites=campsites, location=request.form.get('location'))
 
 @app.route('/about')
 def about():
