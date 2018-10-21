@@ -1,9 +1,15 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, session
 from app import app, db
 from app.forms import LoginForm, SignupForm, EditProfileForm, WriteReviewForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Review, Campsite
 from werkzeug.urls import url_parse
+from xmljson import BadgerFish
+from json import dumps
+from collections import OrderedDict
+import xml.etree.ElementTree as ET
+import sys
+from math import sin, cos, sqrt, atan2, radians
 from datetime import datetime as dt
 
 
@@ -19,7 +25,12 @@ def before_request():
 def index():
     return render_template('Home.html')
 
+  
+@app.route('/indexRec')
+def indexRec():
+    return render_template('indexRec.html')
 
+  
 @app.route('/get_map')
 def get_map():
     return render_template('testGoogleAPI.html')
@@ -49,7 +60,72 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+  
+@app.route('/api/search', methods = ['POST'])
+def get_post_javascript_data():
 
+    returndata = request.form.get('XMLCampsiteData')
+    returnLocation = request.form.get('location')
+    radius = request.form.get('radius')
+
+    parsedData = XMLParse(returndata)
+
+    CalculateNearbyCampsites(parsedData, returnLocation, radius)
+
+    return "ok"
+
+def XMLParse(xmldata):
+    xmldata = xmldata.replace("\n", "")
+
+    root = ET.fromstring(xmldata)
+    
+    if not root:
+      return "Error in parsing XML data"
+
+    return root
+
+def CalculateNearbyCampsites(data, location, radius):
+    temp = location.split(",")
+    latitude = round(float(temp[0]))
+    longitude = round(float(temp[1]))
+
+    print("STARTING", latitude, longitude)
+
+    print("starting count", len(data))
+
+    count = 0
+
+    for ele in data:
+        if ele.attrib["latitude"] == "" or ele.attrib["longitude"] == "":
+            continue
+        targetlatitude = round(float(ele.attrib["latitude"]))
+        targetlongitude = round(float(ele.attrib["longitude"]))
+        print(ele.attrib["facilityName"], ele.attrib["latitude"], ele.attrib["longitude"])
+
+        # approximate radius of earth in km
+        R = 6373.0
+
+        lati = radians(latitude)
+        loni = radians(longitude)
+        latf = radians(targetlatitude)
+        lonf = radians(targetlongitude)
+
+        dlon = lonf - loni
+        dlat = latf - lati
+
+        a = sin(dlat / 2) ** 2 + cos(lati) * cos(latf) * sin(dlon / 2) ** 2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        #times conversion factor to transfer to miles
+        distance = R * c * 0.621371
+        
+        if distance <= float(radius):
+            print(ele.attrib["facilityName"], "is within the radius")
+            count += 1
+
+    print("finishing count: ", count)
+
+    
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
