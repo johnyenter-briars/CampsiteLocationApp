@@ -1,16 +1,23 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, session
 from app import app
 from app.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
-
+from xmljson import BadgerFish
+from json import dumps
+from collections import OrderedDict
+from xml.etree.ElementTree import fromstring
+import sys
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
 
+@app.route('/indexRec')
+def indexRec():
+    return render_template('indexRec.html')
 
 @app.route('/get_map')
 def get_map():
@@ -45,3 +52,35 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/set/')
+def set():
+    session['key'] = 'value'
+    return 'ok'
+
+@app.route('/getLatandLong/')
+def getLatandLong():
+    if session.get('LatandLong') is None:
+        return "The session storage at that key returned none"
+    return session.get('LatandLong')
+
+@app.route('/getJSON/')
+def getJSON():
+    if session.get('json') is None:
+        return "The session storage at that key returned none"
+    return session.get('json')
+
+@app.route('/postmethod', methods = ['POST'])
+def get_post_javascript_data():
+    jsdata = request.form['javascript_data']
+
+    return jsdata
+
+@app.route('/XMLtoJSON/')
+def XMLtoJSON(xmldata):
+
+    bf = BadgerFish(dict_type=OrderedDict)
+
+    data = dumps(bf.data(fromstring(xmldata)))
+
+    return data

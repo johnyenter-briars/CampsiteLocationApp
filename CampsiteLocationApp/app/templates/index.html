@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='jQuery-3.3.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='MainPage.js')}}"></script>
 </head>
 <body>
 <h1>Much better css to go here</h1>
 
 <iframe src="/get_map"></iframe>
 
+<button id="GetCampSitesWithinRadiusBtn" onclick="GetCampSitesWithinRadius();">Get Data</button>
 
 </body>
 </html>

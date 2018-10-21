@@ -30,7 +30,12 @@ function initMap() {
 	google.maps.event.addDomListener(marker, 'dragend', function (event) {
 		var lat = marker.position.lat();
 		var lng = marker.position.lng();
-		console.log("lat: " + lat);
-		console.log("long: " + lng);
+
+		AddToSessionStorage(lat, lng);
 	});
+}
+function AddToSessionStorage(lat, lng)
+{
+    var data = {latitude: lat, longitude: lng};
+    sessionStorage.setItem("LatandLong", JSON.stringify(data));
 }
