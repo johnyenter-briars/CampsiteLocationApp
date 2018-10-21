@@ -16,6 +16,7 @@ Mako==1.0.7
 MarkupSafe==1.0
 mccabe==0.6.1
 pep8==1.7.1
+psycopg2==2.7.5
 pydocstyle==3.0.0
 pylint==2.1.1
 python-dateutil==2.7.3
