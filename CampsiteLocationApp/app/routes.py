@@ -109,7 +109,7 @@ def edit_profile():
                            form=form)
 
 
-@app.route('/campsites')
+@app.route('/campsites', methods=['GET', 'POST'])
 @login_required
 def campsites():
     # TODO: Replace dummmy data
