@@ -6,14 +6,16 @@
   {% else %}
   <title>Welcome to DemonCats</title>
   {% endif %}
+  {% block styles %}{% endblock %}
 </head>
 
 <body>
-  <div>DemonCats:
+  <div>TREELINE:
     <a href="{{ url_for('index') }}">Home</a>
     {% if current_user.is_anonymous %}
     <a href="{{ url_for('login') }}">Login</a>
     {% else %}
+    <a href="{{ url_for('profile') }}">Profile</a>
     <a href="{{ url_for('logout') }}">Logout</a>
     {% endif %}
   </div>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Campsites</h1>
+<hr>
+{% for campsite in campsites %}
+{% include '_campsite.html' %}
+{% endfor %}
+{% endblock %}
