@@ -25,15 +25,29 @@
     {% endfor %}
   </p>
   <p>
+    {{ form.first_name.label }}<br>
+    {{ form.first_name(size=64, class_='') }}<br>
+    {% for error in form.first_name.errors %}
+    <span class="error" style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.last_name.label }}<br>
+    {{ form.last_name(size=64, class_='') }}<br>
+    {% for error in form.last_name.errors %}
+    <span class="error" style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
     {{ form.password.label }}<br>
-    {{ form.password(size=32, class_='') }}<br>
+    {{ form.password(size=32) }}<br>
     {% for error in form.password.errors %}
     <span class="error" style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
     {{ form.password2.label }}<br>
-    {{ form.password2(size=32, class_='') }}<br>
+    {{ form.password2(size=32) }}<br>
     {% for error in form.password2.errors %}
     <span class="error" style="color: red;">[{{ error }}]</span>
     {% endfor %}
