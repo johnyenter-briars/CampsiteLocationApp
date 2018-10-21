@@ -89,6 +89,8 @@ def CalculateNearbyCampsites(data, location, radius):
     latitude = round(float(temp[0]))
     longitude = round(float(temp[1]))
 
+    returnlyst = []
+
     print("STARTING", latitude, longitude)
 
     print("starting count", len(data))
@@ -122,8 +124,7 @@ def CalculateNearbyCampsites(data, location, radius):
         if distance <= float(radius):
             print(ele.attrib["facilityName"], "is within the radius")
             count += 1
-
-    print("finishing count: ", count)
+            returnlyst.append({'latitude': latitude, 'longitude': longitude})
 
     
 @app.route('/signup', methods=['GET', 'POST'])
@@ -198,3 +199,4 @@ def new_review(cid, pid):
         flash(f'Review saved for campsite at {cid}: {pid}')
         return redirect(url_for('profile'))
     return render_template('new_review.html', cid=cid, pid=pid, form=form)
+

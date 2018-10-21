@@ -38,10 +38,11 @@ function GetCampSiteAPIData(state, location)
     request.open('GET', "http://api.amp.active.com/camping/campgrounds/?pstate=" + state + "&api_key=" + devkey, true);
 
     request.onload = function () {
-        $.post( "/postmethod", {
+        $.post( "/api/search", {
             XMLCampsiteData: this.response, location: location.latitude + "," + location.longitude, radius: radius
         });
 
     }
     request.send();
 }
+
