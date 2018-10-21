@@ -1,13 +1,26 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profileStyles.css') }}">
+{% endblock %}
 
 {% block content %}
-<img src="{{ user.avatar(128) }}"></td>
-<h1>User: {{ user.username }}</h1>
-{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-{% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
-<p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-<hr>
-{% for campsite in campsites %}
-{% include '_campsite.html' %}
-{% endfor %}
+<h1 class="profile_header">Your Profile!</h1>
+<!-- 2 columns -->
+
+<div class="row">
+  <div class="column left">
+    <img src="{{ user.avatar() }}" class="user_photo">
+    <h2 class="user_name">{{ user.first_name }} {{ user.last_name }}</h2>
+    <p>{{ user.about_me }}</p>
+  </div>
+  <div class="column right">
+    <!--List of favorited Campsites-->
+    <h3>Saved Campsites</h3>
+    {% for campsite in campsites %}
+    <div class="favorites">
+      {% include '_campsite.html' %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

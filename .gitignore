@@ -114,3 +114,6 @@ venv.bak/
 
 # Mac cache
 .DS_Store
+
+# log files
+logs/
