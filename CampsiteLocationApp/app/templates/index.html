@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
-</head>
-<body>
-<h1>Much better css to go here</h1>
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+{% endblock %}
 
-<iframe src="/get_map"></iframe>
+{% block content %}
+    <h1>time to get crunchy 😏</h1>
+    <script type="text/javascript" src="jQuery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="testrec.js"></script>
+    <h1>Much better css to go here</h1>
+
+    <iframe src="/get_map"></iframe>
+{% endblock %}
 
 
 </body>
