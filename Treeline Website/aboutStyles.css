@@ -1,0 +1,28 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Create two equal columns that floats next to each other */
+.parent {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 100px;
+}
+.left {
+    padding: 1em;
+    text-align: left;
+}
+
+.right {
+    padding: 1em;
+    text-align: left;    
+	width: 50%;
+	margin-top: -50px;
+}
+
+.about_header{
+	font-family: avenir;
+	font-size: 50px;
+}
