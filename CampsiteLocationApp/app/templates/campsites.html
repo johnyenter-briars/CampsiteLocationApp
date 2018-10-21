@@ -1,9 +1,46 @@
 {% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/campstyles.css') }}">
+{% endblock %}
 
 {% block content %}
-<h1>Campsites</h1>
-<hr>
-{% for campsite in campsites %}
-{% include '_campsite.html' %}
-{% endfor %}
+<!--2 Column layout-->
+
+<div class="row">
+  <div class="column left">
+    <h1 class="showing_results">Showing Results for</h1>
+    <h2 class="current_location">Fresno, California</h2>
+
+    {% for campsite in campsites %}
+    {% include '_campsite.html' %}
+    {% endfor %}
+
+  <!--Google Maps-->
+  <div class="column right">
+    <div style="width: 100%">
+      <iframe width="95%" height="800px" src="https://maps.google.com/maps?width=100%&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street%2C%20Dublin%2C%20Ireland+(My%20Business%20Name)&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed"
+        frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a href="https://www.maps.ie/create-google-map/">Google
+          Maps iframe generator</a></iframe>
+    </div>
+    <br />
+  </div>
+</div>
+
 {% endblock %}
+
+<!--Footer-->
+
+<div class="footer" style="margin-top: 1400px">
+  <ul class="footer_filter">
+    <li style="font-weight: bold">Browse by filter</li>
+    <li>Activities</li>
+    <li>Cost</li>
+    <li>Size</li>
+    <li>Ammenities</li>
+    <li>Popularity</li>
+    <li>Availability</li>
+  </ul>
+</div>
+</body>
+
+</html>

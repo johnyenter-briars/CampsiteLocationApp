@@ -17,7 +17,7 @@ def before_request():
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('Home.html')
 
 
 @app.route('/get_map')
@@ -93,17 +93,21 @@ def edit_profile():
 @app.route('/campsites')
 @login_required
 def campsites():
+    # TODO: Replace dummmy data
     campsites = [
-        {'contract_id': 'IL', 'park_id': '47083'},
-        {'contract_id': 'IL', 'park_id': '47083'}
+        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
+        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
+        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
+        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'}
     ]
     return render_template('campsites.html', title='Campsites', campsites=campsites)
 
 
-@app.route('/reviews/<cid>/<pid>')
-def reviews(cid, pid):
+@app.route('/campsite/<cid>/<pid>')
+def site(cid, pid):
+    # TODO: fetch park data from api
     reviews = Review.query.filter_by(contract_id=cid, park_id=pid).all()
-    return render_template('reviews.html', cid=cid, pid=pid, reviews=reviews)
+    return render_template('site.html', cid=cid, pid=pid, reviews=reviews)
 
 
 

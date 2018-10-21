@@ -1,17 +1,11 @@
-<table>
-  <tr valign="top">
-    <td>
-      <h2 style="margin-bottom: 0px;">{{ campsite.contract_id }}</h2>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p>{{ campsite.park_id }}</p>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <p><a href="{{ url_for('reviews', cid=campsite.contract_id, pid=campsite.park_id) }}">Check the reviews</a></p>
-    </td>
-  </tr>
-</table>
+<div class="campgrounds">
+  <div class="row_campsites">
+    <div class="column_left_campsites">
+      <img src="{{ campsite.img }}" width="250" height="180" alt="{{ campsite.name }}" />
+    </div>
+    <div class="column_right_campsites">
+      <h3 class="campsite_name">{{ campsite.name }}</h3>
+      <p>{{ campsite.description }}</p>
+    </div>
+  </div>
+</div>

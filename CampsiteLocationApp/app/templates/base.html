@@ -1,35 +1,49 @@
+<!doctype html>
 <html>
 
 <head>
-  {% if title %}
-  <title>{{ title }} - DemonCats</title>
-  {% else %}
-  <title>Welcome to DemonCats</title>
-  {% endif %}
+  <meta charset="UTF-8">
+
+  {% if title %}<title>{{ title }}</title>
+  {% else %}<title>Treeline</title>{% endif %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/globalStyles.css') }}">
   {% block styles %}{% endblock %}
 </head>
 
 <body>
-  <div>TREELINE:
-    <a href="{{ url_for('index') }}">Home</a>
-    {% if current_user.is_anonymous %}
-    <a href="{{ url_for('login') }}">Login</a>
-    {% else %}
-    <a href="{{ url_for('profile') }}">Profile</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
-    {% endif %}
+  <!-- Top navigation -->
+  <div class="topnav">
+
+    <!-- Centered link -->
+    <div class="topnav-centered"> <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo-02.jpg') }}" width="211" height="68" alt="" /></a>
+    </div>
+
+    <!-- Left-aligned links (default) -->
+    <div class="topnav-left"> <a href="{{ url_for('profile') }}">My Campsites</a>
+      {% if current_user.is_anonymous %}
+      <a href="{{ url_for('login') }}">Login</a>
+      {% else %}
+      <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </div>
+    <!-- Right-aligned links -->
+    <div class="topnav-right"> <a href="#search">Contact</a> <a href="#about">About</a> </div>
   </div>
   <hr>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
-  <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-  </ul>
+  {% for message in messages %}
+  <div class="pop_up">
+    <h4 class="msg">
+      {{ message }}
+    </h4>
+  </div>
+  {% endfor %}
   {% endif %}
   {% endwith %}
-{% block content %}{% endblock %}
+
+  {% block content %}
+  {% endblock %}
 </body>
 
 </html>
