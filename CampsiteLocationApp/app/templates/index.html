@@ -5,10 +5,14 @@
 
 {% block content %}
     <h1>time to get crunchy 😏</h1>
-    <script type="text/javascript" src="jQuery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="testrec.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?js?key=AIzaSyB31C7CeNH_CyGtLBaKz7SlWLmgkLvB7kE" type="text/javascript"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='jQuery-3.3.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='MainPage.js')}}"></script>
     <h1>Much better css to go here</h1>
 
-    <iframe src="/get_map"></iframe>
-    <button id="GetCampSitesWithinRadiusBtn" onclick="GetCampSitesWithinRadius();">Get Nearby Campsites</button>
+    <iframe id="MainMapiFrame" src="/get_map"></iframe>
+    <button id="GetCampSitesWithinRadiusBtn" onclick="GetCampSitesWithinRadius()">Get Nearby Campsites</button>
+    <input type="text" id="SearchTextBox">
+    <button id="GetCampSitesNearCityState" onclick="GetCampSitesNearCityState();">Search By City</button>
+    <button id="GetWikipediaAPITest" onclick="GetWikipediaAPITest()">Wikipedia API Test</button>
 {% endblock %}

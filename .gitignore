@@ -112,6 +112,9 @@ venv.bak/
 # IdeaJ settings
 .idea/
 
+# log files
+logs/
+
 # Mac cache
 .DS_Store
 
