@@ -177,24 +177,39 @@ def edit_profile():
                            form=form)
 
 
-@app.route('/campsites', methods=['GET', 'POST'])
-@login_required
-def campsites():
-    # TODO: Replace dummmy data
-    campsites = [
-        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
-        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
-        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
-        {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'}
-    ]
-    return render_template('campsites.html', title='Campsites', campsites=campsites)
+# @app.route('/campsites', methods=['GET', 'POST'])
+# @login_required
+# def campsites():
+#     # TODO: Replace dummmy data
+#     campsites = [
+#         {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
+#         {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
+#         {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'},
+#         {'name': 'Arcadia Campgrounds', 'img': '/static/img/Feature_01.jpg', 'description': 'Angeles Crest Creamery is a working goat dairy on 70 private acres in the Angeles National Forest. Our camp site is a natural clearing in the great state of California.'}
+#     ]
+#     return render_template('campsites.html', title='Campsites', campsites=campsites)
 
+
+@app.route('/api/search', methods=['POST'])
+def search():
+    campsites = [
+        {'name': 'Adeline Jay Geo-Karis Illinois Beach State Park', 'cid': 'IL', 'pid': '453023'},
+        {'name': 'Apple River Canyon State Park', 'cid': 'IL', 'pid': '451301'},
+        {'name': 'Archway RV Park', 'cid': 'IL', 'pid': '720591'},
+        {'name': 'Big River State Forest', 'cid': 'IL', 'pid': '455801'},
+        {'name': 'Cahokia RV Parque', 'cid': 'IL', 'pid': '721988'},
+        {'name': 'Camp Lakewood Campground RV Park', 'cid': 'IL', 'pid': '721809'},
+        {'name': 'Casey KOA', 'cid': 'IL', 'pid': '730187'},
+        {'name': 'Castle Rock State Park', 'cid': 'IL', 'pid': '451621'},
+        {'name': 'Argyle Lake State Park', 'cid': 'IL', 'pid': '451341'}
+    ]
+    return render_template('campsites.html', campsites=campsites)
 
 @app.route('/about')
 def about():
     return render_template('About.html')
 
-@app.route('/campsite/<cid>/<pid>')
+@app.route('/campsites/<cid>/<pid>')
 def site(cid, pid):
     # TODO: fetch park data from api
     r = requests.get(f'http://api.amp.active.com/camping/campground/details?contractCode={cid}&parkId={pid}&api_key=8qmqjffpscjuwgqmmgcz3v84')
@@ -202,16 +217,28 @@ def site(cid, pid):
         print(r)
         return render_template('404.html'), 404
     root = XMLParse(r.text)
-    campsite = {
-        'name': root.attrib.get('facility')
-    }
+    amenities = []
+    activities = []
+    for e in root:
+        print(e)
+        if e.tag == 'amenity':
+            amenities.append(e.attrib.get('name'))
+        elif e.tag == 'bulletin':
+            activities.append(e.attrib.get('description'))
+    campsite = Campsite.query.filter_by(contract_id=cid, park_id=pid).first()
+    if not campsite:
+        campsite = Campsite(facility_name=root.attrib.get('facility'),
+                            contract_id=cid,
+                            park_id=pid)
+        db.session.add(campsite)
+        db.session.commit()
     print(campsite)
+
     reviews = Review.query.filter_by(contract_id=cid, park_id=pid).all()
-    return render_template('site.html', campsite=campsite, cid=cid, pid=pid, reviews=reviews)
+    return render_template('site.html', campsite=campsite, amenities=amenities, activities=activities, cid=cid, pid=pid, reviews=reviews)
 
 
-
-@app.route('/reviews/new/<cid>/<pid>', methods=['GET', 'POST'])
+@app.route('/campsites/<cid>/<pid>/new', methods=['GET', 'POST'])
 @login_required
 def new_review(cid, pid):
     form = WriteReviewForm()
@@ -228,7 +255,7 @@ def new_review(cid, pid):
     return render_template('new_review.html', cid=cid, pid=pid, form=form)
 
 
-@app.route('/campsite/<cid>/<pid>/add', methods=['POST'])
+@app.route('/campsites/<cid>/<pid>/add-favorite', methods=['POST'])
 @login_required
 def add_favorite(cid, pid):
     campsite = Campsite.query.filter_by(contract_id=cid, park_id=pid)

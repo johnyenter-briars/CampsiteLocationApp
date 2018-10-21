@@ -1,9 +1,9 @@
   <div class="row_campsites">
     <div class="column_left_campsites">
-      <img src="{{ campsite.img }}" width="250" height="180" alt="{{ campsite.name }}" />
+      <img src="{{ url_for('static', filename='img/campsite_03.jpeg') }}" width="250" height="180" alt="{{ campsite['name'] }}" />
     </div>
     <div class="column_right_campsites">
-      <h3 class="campsite_name">{{ campsite.name }}</h3>
-      <p>{{ campsite.description }}</p>
+      <h3 class="campsite_name">{{ campsite['name'] }}</h3>
+      <a href="{{ url_for('site', cid=campsite['cid'], pid=campsite['pid']) }}"
     </div>
   </div>
