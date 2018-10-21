@@ -1,46 +1,54 @@
 @charset "UTF-8";
 /* CSS Document */
 
+.profile_header{
+	font-family: avenir;
+	font-size: 70px;
+	text-align: center;
+}
+
+
 /* Create two unequal columns that floats next to each other */
 .column {
     float: left;
-    padding: 0px;
+    padding: 10px;
     height: 300px; /* Should be removed. Only for demonstration */
 }
-iframe{
-	margin-top: 100px;
-}
-/*Left Column*/
-.left {
-  width: 55%;
-}
-
-/*Right Column*/
-.right {
-  width: 45%;
-}
-
-
 .row{
 	width: 90%;
 	margin-left: 5%;
-
+}
+.left {
+  width: 40%;
 }
 
-.showing_results{
-	font-family: avenir;
-	font-size: 50px;
-	margin-top: -10px;
+.right {
+  width: 60%;
 }
-.current_location{
-	font-family: avenir;
-	font-size: 35px;
-	color: #45BF55;
-	margin-top: -30px;
+
+.user_photo{
+	width: 250px;
+	height: 250px;
+	background-color: red;
 }
-/*Master Campsite container*/
-.campgrounds{
-	margin-top: 100px;
+.user_name{
+	font-family: avenir;
+	font-size: 30px;
+}
+p{
+	font-family: avenir;
+	margin-top: -20px;
+	width: 80%;
+}
+
+.favorites{
+	margin-top: 50px;
+}
+
+h3{
+	font-family: avenir;
+	font-size: 30px;
+	margin-top: -40px;
 }
 .campsite_name{
 	font-family: avenir;
@@ -48,13 +56,14 @@ iframe{
 }
 /*Left Column*/
 .column_left_campsites {
+	margin-top: 30px;
 }
 
 /*Right Column*/
 .column_right_campsites {
   width: 50%;
 	margin-left: 40%;
-	margin-top: -210px;
+	margin-top: -160px;
 }
 p{
 	font-family: avenir;

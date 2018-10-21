@@ -1,0 +1,105 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Slideshow container */
+.slideshow-container {
+margin-left: 27%;
+	
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+
+/* Create two equal columns that floats next to each other */
+.column1 {
+    float: left;
+    width: 50%;
+		padding: 30px;
+
+}
+.row1{
+	width: 90%;
+	margin-left: 5%;
+	margin-top: 40px;
+}
+.site_name{
+	font-family: avenir;
+	font-size: 34px;
+}
+.site_description{
+		font-family: avenir;	
+	
+}
+.review_header{
+			font-family: avenir;
+	margin-top: 80px;
+
+}
+.reviewer_name{
+			font-family: avenir;	
+
+}
+.reviewer_comment{
+			font-family: avenir;
+	font-style: italic;
+
+}
+.amenities{
+	font-family: avenir;
+	margin-top: 100px;
+}
+.activities{
+	font-family: avenir;
+}
+
+
