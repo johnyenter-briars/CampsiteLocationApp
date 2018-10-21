@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request, session
-from app import app
-from app.forms import LoginForm
+from app import app, db
+from app.forms import LoginForm, SignupForm, EditProfileForm, WriteReviewForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Review, Campsite
 from werkzeug.urls import url_parse
 from xmljson import BadgerFish
 from json import dumps
@@ -10,6 +10,14 @@ from collections import OrderedDict
 import xml.etree.ElementTree as ET
 import sys
 from math import sin, cos, sqrt, atan2, radians
+from datetime import datetime as dt
+
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = dt.utcnow()
+        db.session.commit()
 
 
 @app.route('/')
@@ -17,19 +25,15 @@ from math import sin, cos, sqrt, atan2, radians
 def index():
     return render_template('index.html')
 
+  
 @app.route('/indexRec')
 def indexRec():
     return render_template('indexRec.html')
 
+  
 @app.route('/get_map')
 def get_map():
     return render_template('testGoogleAPI.html')
-
-
-@app.route('/layout/<name>')
-def profile(name):
-
-    return render_template('layout.html', name=name)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,6 +47,7 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
+        flash(f'Logged in as {user.username}')
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
@@ -55,29 +60,13 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/set/')
-def set():
-    session['key'] = 'value'
-    return 'ok'
-
-@app.route('/getLatandLong/')
-def getLatandLong():
-    if session.get('LatandLong') is None:
-        return "The session storage at that key returned none"
-    return session.get('LatandLong')
-
-@app.route('/getJSON/')
-def getJSON():
-    if session.get('json') is None:
-        return "The session storage at that key returned none"
-    return session.get('json')
-
-@app.route('/postmethod', methods = ['POST'])
+  
+@app.route('/api/search', methods = ['POST'])
 def get_post_javascript_data():
 
-    returndata = request.form['XMLCampsiteData']
-    returnLocation = request.form['location']
-    radius = request.form['radius']
+    returndata = request.form.get('XMLCampsiteData')
+    returnLocation = request.form.get('location')
+    radius = request.form.get('radius')
 
     parsedData = XMLParse(returndata)
 
@@ -85,17 +74,16 @@ def get_post_javascript_data():
 
     return "ok"
 
-@app.route('/XMLParse/')
 def XMLParse(xmldata):
     xmldata = xmldata.replace("\n", "")
 
     root = ET.fromstring(xmldata)
-    if root is not None:
-        return root;
+    
+    if not root:
+      return "Error in parsing XML data"
 
-    return "Error in parsing XML data"
+    return root
 
-@app.route('/CalculateNearbyCampsites/')
 def CalculateNearbyCampsites(data, location, radius):
     temp = location.split(",")
     latitude = round(float(temp[0]))
@@ -130,9 +118,83 @@ def CalculateNearbyCampsites(data, location, radius):
 
         #times conversion factor to transfer to miles
         distance = R * c * 0.621371
-
+        
         if distance <= float(radius):
             print(ele.attrib["facilityName"], "is within the radius")
             count += 1
 
     print("finishing count: ", count)
+
+    
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = SignupForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data,
+                    email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you\'re signed up!')
+        return redirect(url_for('login'))
+    return render_template('signup.html', title='Signup', form=form)
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    campsites = current_user.campsites.all()
+    return render_template('profile.html', user=current_user, campsites=campsites)
+
+
+@app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm(current_user.username)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)
+
+
+@app.route('/campsites')
+@login_required
+def campsites():
+    campsites = [
+        {'contract_id': 'IL', 'park_id': '47083'},
+        {'contract_id': 'IL', 'park_id': '47083'}
+    ]
+    return render_template('campsites.html', title='Campsites', campsites=campsites)
+
+
+@app.route('/reviews/<cid>/<pid>')
+def reviews(cid, pid):
+    reviews = Review.query.filter_by(contract_id=cid, park_id=pid).all()
+    return render_template('reviews.html', cid=cid, pid=pid, reviews=reviews)
+
+
+
+@app.route('/reviews/new/<cid>/<pid>', methods=['GET', 'POST'])
+@login_required
+def new_review(cid, pid):
+    form = WriteReviewForm()
+    if form.validate_on_submit():
+        review_body = form.review.data
+        review = Review(body=review_body,
+                        user_id=current_user.id,
+                        contract_id=cid,
+                        park_id=pid)
+        db.session.add(review)
+        db.session.commit()
+        flash(f'Review saved for campsite at {cid}: {pid}')
+        return redirect(url_for('profile'))
+    return render_template('new_review.html', cid=cid, pid=pid, form=form)

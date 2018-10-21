@@ -1,0 +1,14 @@
+<table>
+  <tr valign="top">
+    <td>
+      <img src="{{ review.author.avatar(30) }}"></td>
+      <h4 style="margin-bottom: 0px;">{{ review.contract_id }}: {{ review.park_id }}</h4>
+      <p>{{ review.timestamp }}</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><b>{{ review.author.username }}</b>: {{ review.body }}</p>
+    </td>
+  </tr>
+</table>
