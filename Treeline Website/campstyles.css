@@ -1,0 +1,59 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 0px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+/*Left Column*/
+.left {
+  width: 55%;
+}
+
+/*Right Column*/
+.right {
+  width: 45%;
+}
+
+
+.row{
+	width: 90%;
+	margin-left: 5%;
+
+}
+
+.showing_results{
+	font-family: avenir;
+	font-size: 50px;
+	margin-top: -10px;
+}
+.current_location{
+	font-family: avenir;
+	font-size: 35px;
+	color: #45BF55;
+	margin-top: -30px;
+}
+/*Master Campsite container*/
+.campgrounds{
+	margin-top: 100px;
+}
+.campsite_name{
+	font-family: avenir;
+	font-size: 26px;
+}
+/*Left Column*/
+.column_left_campsites {
+}
+
+/*Right Column*/
+.column_right_campsites {
+  width: 50%;
+	margin-left: 40%;
+	margin-top: -210px;
+}
+p{
+	font-family: avenir;
+	margin-top: -20px;
+}
