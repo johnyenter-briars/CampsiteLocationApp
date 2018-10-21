@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Write a Review</h1>
+<h4>{{ cid }}: {{ pid }}</h4>
+<form action="{{ url_for('new_review', cid=cid, pid=pid) }}" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.review.label }}<br>
+    {{ form.review(cols=50, rows=4) }}<br>
+    {% for error in form.review.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

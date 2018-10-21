@@ -112,3 +112,18 @@ ul{
 	transform: none;
 }
 }
+
+.pop_up{
+	width: 100%;
+	z-index: 99;
+	height: 50px;
+	background-color: #45BF55;
+	position: absolute;
+	margin-top: /* TODO: what's this */
+	}
+	.msg{
+	margin-top: 15px;
+	margin-left: 50px;
+	color: white;
+	font-family: avenir;
+	}

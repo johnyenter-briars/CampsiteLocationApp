@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<!--Hero Image-->
+<div class="main"> <img class="hero_image" src="{{ url_for('static', filename='img/home.jpg') }}" width="1440" height="880" alt="Hero"/>
+  <h1>Discover your <br>
+    perfect campsite</h1>
+  <!--Search bar-->
+
+  <div class="search_bar"> <img class="search_icon" src="{{ url_for('static', filename='img/search.png') }}" width="40px" height="40px" alt="search icon"/>
+    <form action="/search" method="POST">
+      <input type="text" id="searchTxt" name="location" placeholder="Denver">
+    </form>
+  </div>
+</div>
+
+<!--Features-->
+	<h4 class="features">Featured Campsites</h4>
+<!--Features 01-->
+
+<div class="flex-grid-seconds">
+  <div class="col"> <img src="{{ url_for('static', filename='img/Feature_01.jpg') }}" width="530" height="430" alt=""/>
+    <h3 class="featured_campgrounds">Rocky Mountains Campground</h3>
+    <h4 class="featured_campgrounds_subtitle">Rocky Mts., CO</h4>
+    <h5 class="featured_campgrounds_body">The Rocky Mountains stretch some 3,000 miles from British Columbia and Alberta in Canada through Idaho, Montana, Wyoming, Colorado</h5>
+  </div>
+  <!--Features 02-->
+
+  <div class="col"><img src="{{ url_for('static', filename='img/feature_02.jpg') }}" width="530" height="430" alt=""/>
+    <h3 class="featured_campgrounds">Rocky Mountains Campground</h3>
+    <h4 class="featured_campgrounds_subtitle">Rocky Mts., CO</h4>
+    <h5 class="featured_campgrounds_body">The Rocky Mountains stretch some 3,000 miles from British Columbia and Alberta in Canada through Idaho, Montana, Wyoming, Colorado</h5>
+  </div>
+</div>
+{% endblock %}
