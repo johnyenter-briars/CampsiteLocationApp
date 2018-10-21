@@ -6,6 +6,7 @@ from app.models import User, Review, Campsite
 from werkzeug.urls import url_parse
 from xmljson import BadgerFish
 from json import dumps
+import json
 from collections import OrderedDict
 import xml.etree.ElementTree as ET
 import sys
@@ -124,6 +125,18 @@ def CalculateNearbyCampsites(data, location, radius):
                 latitude, 'longitude': longitude, 'contractID': ele.attrib.get('contractID'), 'facilityID': ele.attrib.get('facilityID')})
 
     return jsonify(returnlyst)
+
+@app.route('/geturl', methods=['POST'])
+def geturl():
+    jsonobject = json.loads(request.form.get("JSONdata"))
+
+    page = list(jsonobject.get("query").get("pages").keys())[0]
+
+    thumburl = jsonobject.get("query").get("pages").get(page).get("imageinfo")[0]
+
+    url = thumburl.get("thumburl")
+
+    return url
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

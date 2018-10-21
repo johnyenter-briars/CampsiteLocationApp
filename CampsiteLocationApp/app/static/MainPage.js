@@ -87,7 +87,7 @@ function IterateThroughNearbyCampsites(nearbycampsites)
 
 
 }
-function GetCampSitesNearCityState()
+function GetCampSitesNearCityState(state, city)
 {
     var state = "CA"
     var city = "Mountain+View"
@@ -130,5 +130,32 @@ function GetAPIDataWithMatchingCity(lat, lng, state)
 
     }
     request.send();
+}
+
+function GetWikipediaAPITest(name)
+{
+    var request = new XMLHttpRequest();
+
+    request.open('GET', "https://www.google.com/search?q=PAINTED+ROCKS+(CO)&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj_kc-t45feAhXCdN8KHUNeCGkQ_AUIDigB&biw=1600&bih=789#imgrc=1:", true);
+
+    request.onload = function () {
+
+        if(request.status != 200)
+        {
+            console.log("Not 200")
+        }
+
+        var data = this.response;
+
+        console.log(JSON.parse(data))
+    }
+    request.send();
+}
+
+function FindImageInfoInJSON(object)
+{
+
+
+
 
 }
