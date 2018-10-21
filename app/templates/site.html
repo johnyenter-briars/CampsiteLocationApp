@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/campsite.css') }}">
+{% endblock %}
+
+{% block content %}
+
+  <!-- Slideshow -->
+
+<div class="slideshow-container">
+
+<div class="mySlides fade">
+  <div class="numbertext">1 / 3</div>
+  <img src="Pics/campsite_03.jpg" width="640" height="420" alt=""/> </div>
+
+<div class="mySlides fade">
+  <div class="numbertext">2 / 3</div>
+  <img src="Pics/campsite_04.jpg" width="640" height="420" alt=""/> </div>
+
+<div class="mySlides fade">
+  <div class="numbertext">3 / 3</div>
+  <img src="Pics/campsite_05.jpg" width="640" height="420" alt=""/> </div>
+
+
+
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+<!-- 2Column -->
+
+<div class="row1">
+    <div class="column1" >
+      <div class="row2">
+    <div class="column2" >
+      <h2 class="site_name">Arcadia Campgrounds</h2>
+      <p class="site_description">SYou’ll have a bit of a drive to get to Kettle Moraine State Forest, but the Wisconsin state park makes the trek worth it, with several areas of the park available for camping and other activities. The northern section of the park offers more of a wooded retreats, with denser trees that help create some seclusion for guests. The 30,000-acre section of the park offers three beaches for swimming and a remote backpacking camping area for the </p>
+    </div>
+    <div class="column2" >
+      <h2 class="review_header">Camper Reviews</h2>
+    <h3 class="reviewer_name">Joe Smith</h3>
+      <p class="reviewer_comment">“When it comes to consumption in state parks, Wisconsin has the right idea. Unlike our home state, this northern neighbor allows guests to bring alcohol into the park campgrounds and trails — the only restrictions are on glass bottles, which are not allowed on beaches.”
+
+
+  </p>
+    </div>
+  </div>
+    </div>
+
+
+    <div class="column1">
+      <div class="row2">
+    <div class="column2" >
+      <h2 class="amenities">Amenities</h2>
+      
+    </div>
+    <div class="column2" >
+      <h2 class="activities">Activities
+
+
+
+  </h2>
+    </div>
+  </div>
+    </div>
+  </div>
+
+
+  <script>
+  var slideIndex = 1;
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}    
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+  }
+  </script>
+
+
+
+{% endblock %}
+
+
+  </body>
+  </html>

@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 import sys
 from math import sin, cos, sqrt, atan2, radians
 from datetime import datetime as dt
+import requests
 
 
 @app.before_request
@@ -23,16 +24,6 @@ def before_request():
 @app.route('/index')
 def index():
     return render_template('Home.html')
-
-
-@app.route('/indexRec')
-def indexRec():
-    return render_template('indexRec.html')
-
-
-@app.route('/get_map')
-def get_map():
-    return render_template('testGoogleAPI.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -199,11 +190,24 @@ def campsites():
     return render_template('campsites.html', title='Campsites', campsites=campsites)
 
 
+@app.route('/about')
+def about():
+    return render_template('About.html')
+
 @app.route('/campsite/<cid>/<pid>')
 def site(cid, pid):
     # TODO: fetch park data from api
+    r = requests.get(f'http://api.amp.active.com/camping/campground/details?contractCode={cid}&parkId={pid}&api_key=8qmqjffpscjuwgqmmgcz3v84')
+    if not r.ok:
+        print(r)
+        return render_template('404.html'), 404
+    root = XMLParse(r.text)
+    campsite = {
+        'name': root.attrib.get('facility')
+    }
+    print(campsite)
     reviews = Review.query.filter_by(contract_id=cid, park_id=pid).all()
-    return render_template('site.html', cid=cid, pid=pid, reviews=reviews)
+    return render_template('site.html', campsite=campsite, cid=cid, pid=pid, reviews=reviews)
 
 
 
